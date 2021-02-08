@@ -1,6 +1,7 @@
 package songlib.app;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 public class SongLibApp extends Application {
 	
 	public void start(Stage primaryStage) throws Exception {
+		Platform.setImplicitExit(true);
 		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/songlib/view/songlib.fxml"));	

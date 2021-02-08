@@ -28,6 +28,9 @@ public class Song {
 	public String getTitle() {
 		return songTitle;
 	}
+	public String getLTitle() {
+		return songTitle.toLowerCase();
+	}
 	public String getAuthor() {
 		return songAuthor;
 	}
@@ -39,9 +42,7 @@ public class Song {
 	}
 	
 	public String toString() {
-		String temp = songTitle + "," + songAuthor;
-		if(songAlbum.length()>0) {temp = temp + "," + songAlbum;}
-		if(songYear.length()>0) {temp = temp + "," + songYear;}
+		String temp = songTitle + " | " + songAuthor;
 		return temp;
 	}
 }
