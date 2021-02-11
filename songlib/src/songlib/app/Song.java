@@ -1,3 +1,7 @@
+//NAMES
+//Jonathan Konopka
+//
+
 package songlib.app;
 
 public class Song {
@@ -6,7 +10,7 @@ public class Song {
 	private String songAlbum;
 	private String songYear;
 	
-	public Song(String title, String author, String album, String year) {
+	public Song(String title, String author, String album, String year) {   //creates a Song class, with following details
 		songTitle = title;
 		songAuthor = author;
 		songAlbum = album;

@@ -1,3 +1,7 @@
+//NAMES
+//Jonathan Konopka
+//
+
 package songlib.app;
 
 import javafx.application.Application;
@@ -18,7 +22,7 @@ public class SongLibApp extends Application {
 		
 		VBox root = (VBox)loader.load();
 		Scene scene = new Scene(root);
-		primaryStage.setScene(scene);
+		primaryStage.setScene(scene);   //initialize window with title
 		primaryStage.setTitle("Song Library");
 		primaryStage.setResizable(false);
 		primaryStage.show();
