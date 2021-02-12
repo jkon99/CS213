@@ -1,8 +1,12 @@
 //NAMES
 //Jonathan Konopka
-//
+//Timothy Zhang
 
 package songlib.app;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -10,11 +14,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import songlib.view.SongLibController;
 
 public class SongLibApp extends Application {
 	
 	public void start(Stage primaryStage) throws Exception {
-		Platform.setImplicitExit(true);
 		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/songlib/view/songlib.fxml"));	
@@ -26,6 +30,21 @@ public class SongLibApp extends Application {
 		primaryStage.setTitle("Song Library");
 		primaryStage.setResizable(false);
 		primaryStage.show();
+	}
+	
+	public void stop() { 
+		try {
+			File file = new File("SongLib.txt");
+			file.createNewFile();
+			FileWriter writer = new FileWriter(file);
+			for(Song i: SongLibController.songs) {
+				writer.write(i.former());
+			}
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Platform.exit();
 	}
 	
 	public static void main(String[] args) {

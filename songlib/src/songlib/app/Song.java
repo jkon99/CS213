@@ -45,6 +45,10 @@ public class Song {
 		return songYear;
 	}
 	
+	public String former() {
+		return (songTitle + "\t" + songAuthor + "\t" + songAlbum + "\t" + songYear + "\n");
+	}
+	
 	public String toString() {
 		String temp = songTitle + " | " + songAuthor;
 		return temp;

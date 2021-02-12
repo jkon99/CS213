@@ -1,16 +1,15 @@
 //NAMES
 //Jonathan Konopka
-//
+//Timothy Zhang
 
 package songlib.view;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,26 +39,26 @@ public class SongLibController {
 	
 	public static final ObservableList<Song> songs = FXCollections.observableArrayList();
 	
+
 	public void initialize(){
-		File file = new File("SongLib.txt");   //load the text file of current songs, include persistency between sessions
+		Platform.setImplicitExit(true);
 		try {
+			File file = new File("SongLib.txt"); //load the text file of current songs, include persistency between sessions
 			Scanner lineReader = new Scanner(file);
 			while(lineReader.hasNextLine()) {
 				String line = lineReader.nextLine();
 				String[] song = line.split("\\t", 4); //split by each detail of a song entry
-				Song temp = new Song(song[0], song[1], song[2], song[4]); 
+				Song temp = new Song(song[0], song[1], song[2], song[3]); 
 				songs.add(temp);
 			}
 			lineReader.close();
+			file.delete();
 		} catch (FileNotFoundException e) {
-			try {
-				file.createNewFile();
-			} catch (IOException r) {
-			}
 		}
 		
 		list.setItems(songs);
 	}
+	
 
 	
 	public void buttonPress(ActionEvent e) {
