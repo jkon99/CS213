@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import songlib.view.SongLibController;
 
-public class SongLibApp extends Application {
+public class SongLib extends Application {
 	
 	public void start(Stage primaryStage) throws Exception {
 		
