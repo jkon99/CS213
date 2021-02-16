@@ -10,6 +10,8 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +21,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -36,6 +39,7 @@ public class SongLibController {
 	@FXML TextField album;
 	@FXML TextField year;
 	@FXML ListView<Song> list;
+	@FXML TextArea info;
 	
 	public static final ObservableList<Song> songs = FXCollections.observableArrayList();
 	
@@ -56,13 +60,25 @@ public class SongLibController {
 		} catch (FileNotFoundException e) {
 		}
 		
+		//method for selected song information, show title, artist, album, year when clicking on the song in detail pane
+		list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Song>() { 
+			public void changed(ObservableValue<? extends Song> obs, Song oldSong, Song newSong) {
+				if(newSong!=null)
+					info.setText(newSong.textbox());
+			}
+		});
+		
 		list.setItems(songs);
+		list.getSelectionModel().select(0);
 	}
 	
 	//should consider a way to back out of button actions? maybe do a pop up before
 	
 	public void buttonPress(ActionEvent e) {
 		Button b = (Button)e.getSource();
+		
+		boolean number = year.getText().matches(".*\\d.*");
+		
 		if(b==Delete) {   //delete button functions
 			int selection = list.getSelectionModel().getSelectedIndex();
 			int newSelection;
@@ -84,6 +100,14 @@ public class SongLibController {
 			
 			
 		} else if(b==Add) {		//add button functions
+			
+			Song temp = new Song(title.getText(), artist.getText(), album.getText(), year.getText());
+			boolean exists = false;
+			for(Song i:songs) {
+				if(i.getLTitle().equals(temp.getLTitle()) && i.getAuthor().toLowerCase().equals(temp.getAuthor().toLowerCase()))
+					exists = true;
+			}
+			
 			if (title.getText().isEmpty() || artist.getText().isEmpty()) {
 				//show pop up that you need a title and artist minimum to create a song entry
 				Stage dialogStage = new Stage();
@@ -95,16 +119,53 @@ public class SongLibController {
 
 				dialogStage.setScene(new Scene(vbox));
 				dialogStage.show();
-			} else {
-				songs.add(new Song(title.getText(), artist.getText(), album.getText(), year.getText()));
+			} 
+			else if(exists){
+				Stage dialogStage = new Stage();
+				dialogStage.initModality(Modality.WINDOW_MODAL);
+
+				VBox vbox = new VBox(new Text("Duplicate Song"));
+				vbox.setAlignment(Pos.CENTER);
+				vbox.setPadding(new Insets(15));
+
+				dialogStage.setScene(new Scene(vbox));
+				dialogStage.show();
+				
+			} 
+			else if(!number && year.getText().length()>0) {
+				Stage dialogStage = new Stage();
+				dialogStage.initModality(Modality.WINDOW_MODAL);
+
+				VBox vbox = new VBox(new Text("Year must be a number"));
+				vbox.setAlignment(Pos.CENTER);
+				vbox.setPadding(new Insets(15));
+
+				dialogStage.setScene(new Scene(vbox));
+				dialogStage.show();
+			}
+			//make sure year is only positive integer
+			else if(year.getText().length()> 0 && Integer.parseInt(year.getText()) < 0) {
+				Stage dialogStage = new Stage();
+				dialogStage.initModality(Modality.WINDOW_MODAL);
+
+				VBox vbox = new VBox(new Text("Year must be positive"));
+				vbox.setAlignment(Pos.CENTER);
+				vbox.setPadding(new Insets(15));
+
+				dialogStage.setScene(new Scene(vbox));
+				dialogStage.show();
+			} 
+			else {
+				songs.add(temp);
 				Comparator<Song> comparator = Comparator.comparing(Song::getLTitle);
+				list.getSelectionModel().select(temp);
 				FXCollections.sort(songs,comparator);
 				title.setText("");
 				artist.setText("");
 				album.setText("");
 				year.setText("");
 				// consider trailing spaces? get rid of them
-				//make sure year is only positive integer
+				
 			}
 			
 		} else if (b==Edit){   //edit button functions
@@ -115,8 +176,5 @@ public class SongLibController {
 	}
 	
 	
-	//method for selected song information, show title, artist, album, year when clicking on the song in detail pane
-	public void selectedSong () {
-		
-	}
+	
 }

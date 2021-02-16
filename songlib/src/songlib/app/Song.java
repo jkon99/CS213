@@ -45,6 +45,25 @@ public class Song {
 		return songYear;
 	}
 	
+	public boolean equals(Song song) {
+		if(this.songTitle.toLowerCase().equals(song.getLTitle()) && this.songAuthor.toLowerCase().equals(song.getAuthor().toLowerCase())) {
+			return true;
+		}
+		return false;
+	}
+	
+	public String textbox() {
+		String result = ("Title: " + songTitle + "\n" +
+						 "Author: "  + songAuthor + "\n");
+		if(songAlbum.length()>0) {
+			result = result.concat("Album: " + songAlbum + "\n");
+		}
+		if(songYear.length()>0) {
+			result = result.concat("Year Released: " + songYear);
+		}
+		return result;
+	}
+	
 	public String former() {
 		return (songTitle + "\t" + songAuthor + "\t" + songAlbum + "\t" + songYear + "\n");
 	}

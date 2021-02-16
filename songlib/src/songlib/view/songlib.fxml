@@ -56,7 +56,7 @@
             <Button fx:id="Delete" layoutX="382.0" layoutY="188.0" mnemonicParsing="false" onAction="#buttonPress" text="Delete" />
             <Button fx:id="Add" layoutX="479.0" layoutY="188.0" mnemonicParsing="false" onAction="#buttonPress" text="Add" />
             <Button fx:id="Edit" layoutX="563.0" layoutY="188.0" mnemonicParsing="false" onAction="#buttonPress" text="Edit" />
-            <TextArea editable="false" layoutX="396.0" layoutY="241.0" prefHeight="137.0" prefWidth="205.0" />
+            <TextArea fx:id="info" editable="false" layoutX="396.0" layoutY="241.0" prefHeight="137.0" prefWidth="205.0" />
             <Text layoutX="396.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Song Information" textAlignment="CENTER" wrappingWidth="205.0" />
       </children>
     </AnchorPane>
