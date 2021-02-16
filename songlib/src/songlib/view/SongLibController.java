@@ -59,11 +59,28 @@ public class SongLibController {
 		list.setItems(songs);
 	}
 	
-
+	//should consider a way to back out of button actions? maybe do a pop up before
 	
 	public void buttonPress(ActionEvent e) {
 		Button b = (Button)e.getSource();
 		if(b==Delete) {   //delete button functions
+			int selection = list.getSelectionModel().getSelectedIndex();
+			int newSelection;
+			
+			if (selection != -1) {
+				list.getItems().remove(selection);
+				Stage dialogStage = new Stage();
+				dialogStage.initModality(Modality.WINDOW_MODAL);
+
+				VBox vbox = new VBox(new Text("Song has been removed from library"));
+				vbox.setAlignment(Pos.CENTER);
+				vbox.setPadding(new Insets(15));
+
+				dialogStage.setScene(new Scene(vbox));
+				dialogStage.show();
+				newSelection = selection - 1;
+				list.getSelectionModel().select(newSelection);
+			}
 			
 			
 		} else if(b==Add) {		//add button functions
@@ -92,12 +109,14 @@ public class SongLibController {
 			
 		} else if (b==Edit){   //edit button functions
 			
+			//ANY of the fields can be changed. Again, if name and artist conflict with those of an existing song, the edit should NOT be allowed 
+			//a message should be shown in a pop-up dialog, or by some other means within the main application window. 
 		}
 	}
 	
 	
-	//method for selected song information, show title, artist, album, year when clicking on the song
-	public void selectSong () {
+	//method for selected song information, show title, artist, album, year when clicking on the song in detail pane
+	public void selectedSong () {
 		
 	}
 }
