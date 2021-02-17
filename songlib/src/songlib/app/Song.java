@@ -1,6 +1,6 @@
 //NAMES
 //Jonathan Konopka
-//
+//Timothy Zhang
 
 package songlib.app;
 
@@ -51,7 +51,7 @@ public class Song {
 		}
 		return false;
 	}
-	
+
 	public String textbox() {
 		String result = ("Title: " + songTitle + "\n" +
 						 "Author: "  + songAuthor + "\n");
@@ -63,13 +63,15 @@ public class Song {
 		}
 		return result;
 	}
+
+
 	
 	public String former() {
 		return (songTitle + "\t" + songAuthor + "\t" + songAlbum + "\t" + songYear + "\n");
 	}
 	
 	public String toString() {
-		String temp = songTitle + " | " + songAuthor;
+		String temp = songTitle + " | " + songAuthor;    //should accept everything as an input except the | character
 		return temp;
 	}
 }

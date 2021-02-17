@@ -32,7 +32,7 @@ public class SongLib extends Application {
 		primaryStage.show();
 	}
 	
-	public void stop() { 
+	public void stop() {   //for persistancy, write to txt when the program terminates
 		try {
 			File file = new File("SongLib.txt");
 			file.createNewFile();
