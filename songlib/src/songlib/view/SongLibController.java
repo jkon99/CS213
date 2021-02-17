@@ -121,7 +121,7 @@ public class SongLibController {
 				} 
 			else {
 				songs.add(temp);
-				Comparator<Song> comparator = Comparator.comparing(Song::getLTitle);
+				Comparator<Song> comparator = Comparator.comparing(Song::comparison);
 				list.getSelectionModel().select(temp);
 				FXCollections.sort(songs,comparator);
 				title.setText("");
@@ -144,10 +144,6 @@ public class SongLibController {
 			
 		}
 	}
-	
-	
-	//method for selected song information, show title, artist, album, year when clicking on the song in detail pane?
-
 	
 	
 	//method for displaying error and button dialog since it is used often

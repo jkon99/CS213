@@ -45,6 +45,10 @@ public class Song {
 		return songYear;
 	}
 	
+	public String comparison() {
+		return (songAlbum.toLowerCase()+songAuthor.toLowerCase());
+	}
+	
 	public boolean equals(Song song) {
 		if(this.songTitle.toLowerCase().equals(song.getLTitle()) && this.songAuthor.toLowerCase().equals(song.getAuthor().toLowerCase())) {
 			return true;
