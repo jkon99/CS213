@@ -10,10 +10,11 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TextArea;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -21,7 +22,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -68,6 +68,8 @@ public class SongLibController {
 			}
 		});
 		
+		
+		
 		list.setItems(songs);
 		list.getSelectionModel().select(0);
 	}
@@ -76,7 +78,6 @@ public class SongLibController {
 	
 	public void buttonPress(ActionEvent e) {
 		Button b = (Button)e.getSource();
-		
 		boolean number = year.getText().matches(".*\\d.*");
 		
 		if(b==Delete) {   //delete button functions
@@ -85,22 +86,16 @@ public class SongLibController {
 			
 			if (selection != -1) {
 				list.getItems().remove(selection);
-				Stage dialogStage = new Stage();
-				dialogStage.initModality(Modality.WINDOW_MODAL);
-
-				VBox vbox = new VBox(new Text("Song has been removed from library"));
-				vbox.setAlignment(Pos.CENTER);
-				vbox.setPadding(new Insets(15));
-
-				dialogStage.setScene(new Scene(vbox));
-				dialogStage.show();
+				
+				popUpDisplay("Song has been removed from library"); 
+				
 				newSelection = selection - 1;
 				list.getSelectionModel().select(newSelection);
 			}
 			
 			
 		} else if(b==Add) {		//add button functions
-			
+
 			Song temp = new Song(title.getText(), artist.getText(), album.getText(), year.getText());
 			boolean exists = false;
 			for(Song i:songs) {
@@ -110,51 +105,20 @@ public class SongLibController {
 			
 			if (title.getText().isEmpty() || artist.getText().isEmpty()) {
 				//show pop up that you need a title and artist minimum to create a song entry
-				Stage dialogStage = new Stage();
-				dialogStage.initModality(Modality.WINDOW_MODAL);
+				popUpDisplay("Both a title and artist are necessary for a song entry");
 
-				VBox vbox = new VBox(new Text("Both a title and artist are necessary for a song entry"));  //or add a button?
-				vbox.setAlignment(Pos.CENTER);
-				vbox.setPadding(new Insets(15));
-
-				dialogStage.setScene(new Scene(vbox));
-				dialogStage.show();
 			} 
-			else if(exists){
-				Stage dialogStage = new Stage();
-				dialogStage.initModality(Modality.WINDOW_MODAL);
-
-				VBox vbox = new VBox(new Text("Duplicate Song"));
-				vbox.setAlignment(Pos.CENTER);
-				vbox.setPadding(new Insets(15));
-
-				dialogStage.setScene(new Scene(vbox));
-				dialogStage.show();
-				
-			} 
-			else if(!number && year.getText().length()>0) {
-				Stage dialogStage = new Stage();
-				dialogStage.initModality(Modality.WINDOW_MODAL);
-
-				VBox vbox = new VBox(new Text("Year must be a number"));
-				vbox.setAlignment(Pos.CENTER);
-				vbox.setPadding(new Insets(15));
-
-				dialogStage.setScene(new Scene(vbox));
-				dialogStage.show();
-			}
-			//make sure year is only positive integer
-			else if(year.getText().length()> 0 && Integer.parseInt(year.getText()) < 0) {
-				Stage dialogStage = new Stage();
-				dialogStage.initModality(Modality.WINDOW_MODAL);
-
-				VBox vbox = new VBox(new Text("Year must be positive"));
-				vbox.setAlignment(Pos.CENTER);
-				vbox.setPadding(new Insets(15));
-
-				dialogStage.setScene(new Scene(vbox));
-				dialogStage.show();
-			} 
+				else if(exists){
+					popUpDisplay("Duplicate Song");
+		
+				} 
+				else if(!number && year.getText().length()>0) {
+					popUpDisplay("Year must be a number");
+				}
+				//make sure year is only positive integer
+				else if(year.getText().length()> 0 && Integer.parseInt(year.getText()) < 0) {
+					popUpDisplay("Year must be positive");
+				} 
 			else {
 				songs.add(temp);
 				Comparator<Song> comparator = Comparator.comparing(Song::getLTitle);
@@ -165,16 +129,37 @@ public class SongLibController {
 				album.setText("");
 				year.setText("");
 				// consider trailing spaces? get rid of them
-				
 			}
 			
 		} else if (b==Edit){   //edit button functions
 			
 			//ANY of the fields can be changed. Again, if name and artist conflict with those of an existing song, the edit should NOT be allowed 
 			//a message should be shown in a pop-up dialog, or by some other means within the main application window. 
+			
+			/* if (conflict) {
+				
+			} else {
+				
+			} */
+			
 		}
 	}
 	
 	
+	//method for selected song information, show title, artist, album, year when clicking on the song in detail pane?
+
 	
+	
+	//method for displaying error and button dialog since it is used often
+	public void popUpDisplay(String text) {
+		Stage dialogStage = new Stage();
+		dialogStage.initModality(Modality.WINDOW_MODAL);
+
+		VBox vbox = new VBox(new Text(text));  //or add a button?
+		vbox.setAlignment(Pos.CENTER);
+		vbox.setPadding(new Insets(15));
+
+		dialogStage.setScene(new Scene(vbox));
+		dialogStage.show();
+	}
 }
