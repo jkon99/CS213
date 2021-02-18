@@ -16,6 +16,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextArea;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -82,15 +83,42 @@ public class SongLibController {
 		
 		if(b==Delete) {   //delete button functions
 			int selection = list.getSelectionModel().getSelectedIndex();
-			int newSelection;
-			
+	
 			if (selection != -1) {
-				list.getItems().remove(selection);
-				
-				popUpDisplay("Song has been removed from library"); 
-				
-				newSelection = selection - 1;
-				list.getSelectionModel().select(newSelection);
+				Stage dialogStage = new Stage();
+				dialogStage.initModality(Modality.WINDOW_MODAL);
+				Button yesB = new Button("Yes");
+				Button cancelB = new Button("Cancel");
+				VBox vbox = new VBox(new Text("Would you like to complete this action? Hit yes to continue or cancel to go back"), yesB, cancelB);  //or add a button?
+				vbox.setAlignment(Pos.CENTER);
+				vbox.setPadding(new Insets(15));
+
+				dialogStage.setScene(new Scene(vbox));
+				dialogStage.show();
+				//set action to buttons
+				yesB.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+		            public void handle(ActionEvent event)
+		            {
+						list.getItems().remove(selection);
+						
+						popUpDisplay("Song has been removed from library"); 
+						
+						int newSelection = selection - 1;
+						list.getSelectionModel().select(newSelection);
+		                dialogStage.close();
+		            }
+				});
+				cancelB.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+		            public void handle(ActionEvent event)
+		            {
+		                dialogStage.close();
+		            }
+				});
+
+	
+
 			}
 			
 			
@@ -115,16 +143,45 @@ public class SongLibController {
 			} else if(year.getText().length()> 0 && Integer.parseInt(year.getText()) < 0) {
 					popUpDisplay("Year must be positive"); //make sure year is only positive integer
 			} else {
-				songs.add(temp);
-				Comparator<Song> comparator = Comparator.comparing(Song::comparison);
-				list.getSelectionModel().select(temp);
-				FXCollections.sort(songs,comparator);
-				title.setText("");
-				artist.setText("");
-				album.setText("");
-				year.setText("");
-				popUpDisplay("Song has been added to library"); 
-				// consider trailing spaces? get rid of them
+				Stage dialogStage = new Stage();
+				dialogStage.initModality(Modality.WINDOW_MODAL);
+				Button yesB = new Button("Yes");
+				Button cancelB = new Button("Cancel");
+				VBox vbox = new VBox(new Text("Would you like to complete this action? Hit yes to continue or cancel to go back"), yesB, cancelB);  //or add a button?
+				vbox.setAlignment(Pos.CENTER);
+				vbox.setPadding(new Insets(15));
+
+				dialogStage.setScene(new Scene(vbox));
+				dialogStage.show();
+				//set action to buttons
+				yesB.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+		            public void handle(ActionEvent event)
+		            {
+						songs.add(temp);
+						Comparator<Song> comparator = Comparator.comparing(Song::getLTitle).thenComparing(Song::getLAuthor);
+						list.getSelectionModel().select(temp);
+						FXCollections.sort(songs,comparator);
+						title.setText("");
+						artist.setText("");
+						album.setText("");
+						year.setText("");
+						popUpDisplay("Song has been added to library"); 
+		                dialogStage.close();
+		            }
+				});
+				cancelB.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+		            public void handle(ActionEvent event)
+		            {
+
+		                dialogStage.close();
+		            }
+				});
+				
+					
+					// consider trailing spaces? get rid of them
+
 			}
 			
 		} else if (b==Edit){   //edit button functions
@@ -155,18 +212,44 @@ public class SongLibController {
 				} else if (title.getText().isEmpty() && artist.getText().isEmpty() && album.getText().isEmpty() && year.getText().isEmpty()) {
 						popUpDisplay("No changes are being made");
 				} else {
-					list.getItems().remove(selection);
-					songs.add(temp);
-					Comparator<Song> comparator = Comparator.comparing(Song::comparison);
-					list.getSelectionModel().select(temp);
-					FXCollections.sort(songs,comparator);
-					title.setText("");
-					artist.setText("");
-					album.setText("");
-					year.setText("");
-					popUpDisplay("Song entry has been successfully edited by the user"); 
+					Stage dialogStage = new Stage();
+					dialogStage.initModality(Modality.WINDOW_MODAL);
+					Button yesB = new Button("Yes");
+					Button cancelB = new Button("Cancel");
+					VBox vbox = new VBox(new Text("Would you like to complete this action? Hit yes to continue or cancel to go back"), yesB, cancelB);  //or add a button?
+					vbox.setAlignment(Pos.CENTER);
+					vbox.setPadding(new Insets(15));
+
+					dialogStage.setScene(new Scene(vbox));
+					dialogStage.show();
+					//set action to buttons
+					yesB.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+			            public void handle(ActionEvent event)
+			            {
+							list.getItems().remove(selection);
+							songs.add(temp);
+							Comparator<Song> comparator = Comparator.comparing(Song::getLTitle).thenComparing(Song::getLAuthor);
+							list.getSelectionModel().select(temp);
+							FXCollections.sort(songs,comparator);
+							title.setText("");
+							artist.setText("");
+							album.setText("");
+							year.setText("");
+							popUpDisplay("Song entry has been successfully edited by the user"); 
+			                dialogStage.close();
+			            }
+					});
+					cancelB.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+			            public void handle(ActionEvent event)
+			            {
+			                dialogStage.close();
+			            }
+					});
+						
+
 				}
-				
 
 			}
 			
@@ -186,4 +269,5 @@ public class SongLibController {
 		dialogStage.setScene(new Scene(vbox));
 		dialogStage.show();
 	}
+	
 }
