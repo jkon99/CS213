@@ -124,7 +124,7 @@ public class SongLibController {
 			
 		} else if(b==Add) {		//add button functions
 
-			Song temp = new Song(title.getText(), artist.getText(), album.getText(), year.getText());
+			Song temp = new Song(title.getText().trim(), artist.getText().trim(), album.getText().trim(), year.getText().trim());
 			boolean exists = false;
 			for(Song i:songs) {
 				if(i.getLTitle().equals(temp.getLTitle()) && i.getAuthor().toLowerCase().equals(temp.getAuthor().toLowerCase()))
@@ -138,9 +138,9 @@ public class SongLibController {
 			} else if(exists){
 					popUpDisplay("Duplicate Song");
 		
-			} else if(!number && year.getText().length()>0) {
+			} else if(!number && year.getText().trim().length()>0) {
 					popUpDisplay("Year must be a number");
-			} else if(year.getText().length()> 0 && Integer.parseInt(year.getText()) < 0) {
+			} else if(year.getText().trim().length()> 0 && Integer.parseInt(year.getText().trim()) < 0) {
 					popUpDisplay("Year must be positive"); //make sure year is only positive integer
 			} else {
 				Stage dialogStage = new Stage();
@@ -191,7 +191,7 @@ public class SongLibController {
 			int selection = list.getSelectionModel().getSelectedIndex();
 			
 			if (selection != -1) {
-				Song temp = new Song(title.getText(), artist.getText(), album.getText(), year.getText());
+				Song temp = new Song(title.getText().trim(), artist.getText().trim(), album.getText().trim(), year.getText().trim());
 				boolean exists = false;
 				for(Song i:songs) {   //check if song already exists as conflict
 					if(i.getLTitle().equals(temp.getLTitle()) && i.getAuthor().toLowerCase().equals(temp.getAuthor().toLowerCase()))
@@ -205,9 +205,9 @@ public class SongLibController {
 				} else if(exists){
 						popUpDisplay("Duplicate Song");
 			
-				} else if(!number && year.getText().length()>0) {
+				} else if(!number && year.getText().trim().length()>0) {
 						popUpDisplay("Year must be a number");
-				} else if(year.getText().length()> 0 && Integer.parseInt(year.getText()) < 0) {
+				} else if(year.getText().trim().length()> 0 && Integer.parseInt(year.getText().trim()) < 0) {
 						popUpDisplay("Year must be positive"); //make sure year is only positive integer
 				} else if (title.getText().isEmpty() && artist.getText().isEmpty() && album.getText().isEmpty() && year.getText().isEmpty()) {
 						popUpDisplay("No changes are being made");
