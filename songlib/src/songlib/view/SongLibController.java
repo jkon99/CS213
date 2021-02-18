@@ -68,7 +68,7 @@ public class SongLibController {
 			}
 		});
 		
-		
+		//set it to blank when nothing is selected. when I delete everything last selected item still has its info in the box!!!!
 		
 		list.setItems(songs);
 		list.getSelectionModel().select(0);
@@ -107,27 +107,23 @@ public class SongLibController {
 				//show pop up that you need a title and artist minimum to create a song entry
 				popUpDisplay("Both a title and artist are necessary for a song entry");
 
-			} 
-				else if(exists){
+			} else if(exists){
 					popUpDisplay("Duplicate Song");
 		
-				} 
-				else if(!number && year.getText().length()>0) {
+			} else if(!number && year.getText().length()>0) {
 					popUpDisplay("Year must be a number");
-				}
-				//make sure year is only positive integer
-				else if(year.getText().length()> 0 && Integer.parseInt(year.getText()) < 0) {
-					popUpDisplay("Year must be positive");
-				} 
-			else {
+			} else if(year.getText().length()> 0 && Integer.parseInt(year.getText()) < 0) {
+					popUpDisplay("Year must be positive"); //make sure year is only positive integer
+			} else {
 				songs.add(temp);
-				Comparator<Song> comparator = Comparator.comparing(Song::getLTitle).thenComparing(Song::getLAuthor);
+				Comparator<Song> comparator = Comparator.comparing(Song::comparison);
 				list.getSelectionModel().select(temp);
 				FXCollections.sort(songs,comparator);
 				title.setText("");
 				artist.setText("");
 				album.setText("");
 				year.setText("");
+				popUpDisplay("Song has been added to library"); 
 				// consider trailing spaces? get rid of them
 			}
 			
@@ -135,12 +131,44 @@ public class SongLibController {
 			
 			//ANY of the fields can be changed. Again, if name and artist conflict with those of an existing song, the edit should NOT be allowed 
 			//a message should be shown in a pop-up dialog, or by some other means within the main application window. 
+			int selection = list.getSelectionModel().getSelectedIndex();
 			
-			/* if (conflict) {
+			if (selection != -1) {
+				Song temp = new Song(title.getText(), artist.getText(), album.getText(), year.getText());
+				boolean exists = false;
+				for(Song i:songs) {   //check if song already exists as conflict
+					if(i.getLTitle().equals(temp.getLTitle()) && i.getAuthor().toLowerCase().equals(temp.getAuthor().toLowerCase()))
+						exists = true;
+				}
 				
-			} else {
+				if (title.getText().isEmpty() || artist.getText().isEmpty()) {
+					//show pop up that you need a title and artist minimum to create a song entry
+					popUpDisplay("Both a title and artist are necessary for a song entry");
+
+				} else if(exists){
+						popUpDisplay("Duplicate Song");
+			
+				} else if(!number && year.getText().length()>0) {
+						popUpDisplay("Year must be a number");
+				} else if(year.getText().length()> 0 && Integer.parseInt(year.getText()) < 0) {
+						popUpDisplay("Year must be positive"); //make sure year is only positive integer
+				} else if (title.getText().isEmpty() && artist.getText().isEmpty() && album.getText().isEmpty() && year.getText().isEmpty()) {
+						popUpDisplay("No changes are being made");
+				} else {
+					list.getItems().remove(selection);
+					songs.add(temp);
+					Comparator<Song> comparator = Comparator.comparing(Song::comparison);
+					list.getSelectionModel().select(temp);
+					FXCollections.sort(songs,comparator);
+					title.setText("");
+					artist.setText("");
+					album.setText("");
+					year.setText("");
+					popUpDisplay("Song entry has been successfully edited by the user"); 
+				}
 				
-			} */
+
+			}
 			
 		}
 	}
