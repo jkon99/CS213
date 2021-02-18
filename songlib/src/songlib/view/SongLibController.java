@@ -121,7 +121,7 @@ public class SongLibController {
 				} 
 			else {
 				songs.add(temp);
-				Comparator<Song> comparator = Comparator.comparing(Song::comparison);
+				Comparator<Song> comparator = Comparator.comparing(Song::getLTitle).thenComparing(Song::getLAuthor);
 				list.getSelectionModel().select(temp);
 				FXCollections.sort(songs,comparator);
 				title.setText("");

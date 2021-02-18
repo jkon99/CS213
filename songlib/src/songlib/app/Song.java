@@ -38,17 +38,15 @@ public class Song {
 	public String getAuthor() {
 		return songAuthor;
 	}
+	public String getLAuthor() {
+		return songAuthor.toLowerCase();
+	}
 	public String getAlbum() {
 		return songAlbum;
 	}
 	public String getYear() {
 		return songYear;
 	}
-	
-	public String comparison() {
-		return (songAlbum.toLowerCase()+songAuthor.toLowerCase());
-	}
-	
 	public boolean equals(Song song) {
 		if(this.songTitle.toLowerCase().equals(song.getLTitle()) && this.songAuthor.toLowerCase().equals(song.getAuthor().toLowerCase())) {
 			return true;
