@@ -105,6 +105,10 @@ public class SongLibController {
 						popUpDisplay("Song has been removed from library"); 
 						
 						int newSelection = selection - 1;
+						if(newSelection == -1)
+							newSelection = 0;
+						if(songs.size()==0)
+							info.setText("");
 						list.getSelectionModel().select(newSelection);
 		                dialogStage.close();
 		            }
