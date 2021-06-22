@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Photos Albums</string>
+    <string name="photo_app">Photo App</string>
+    <string name="create">Create</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+    <string name="photo">Photo</string>
+    <string name="person">Person</string>
+    <string name="textview">TextView</string>
+    <string name="location">Location</string>
+    <string name="locationstring">Location: </string>
+    <string name="personString">Person: </string>
+    <string name="last"><![CDATA[<]]></string>
+    <string name="Next"><![CDATA[>]]></string>
+</resources>
